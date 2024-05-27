@@ -1,0 +1,14 @@
+pandas==2.2.2
+datetime==5.5
+googlemaps==4.10.0
+geocoder==1.38.1
+geopy==2.4.1
+requests==2.31.0
+folium==0.16.0
+polyline==2.0.2
+flask==3.0.3
+IPython==8.21.0
+ipinfo==5.0.1
+dash==2.17.0
+plotly==5.22.0
+dash_leaflet==1.0.15
