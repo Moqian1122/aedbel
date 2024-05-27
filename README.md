@@ -24,7 +24,7 @@ content: the python code file
 function: to run the main programme
 
 (3) runtime.txt
-content: i used 'python-3.12.3'
+content: I used 'python-3.12.3'
 function: to specify the python version to use
 
 (4) requirements.txt
