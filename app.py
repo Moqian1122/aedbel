@@ -22,6 +22,7 @@ from dash import dcc, html
 from dash.dependencies import Input, Output
 import plotly.express as px
 import dash_leaflet as dl
+import openpyxl
 
 # packages do not need to be specified in the requirements.txt
 import re
