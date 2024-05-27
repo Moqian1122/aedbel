@@ -37,8 +37,7 @@ from threading import Thread
 
 # In[34]:
 
-url='https://github.com/Moqian1122/aedbel/blob/main/aed_all_inv.xlsx'
-all_aeds = pd.read_excel(url, engine='openpyxl')
+all_aeds = pd.read_excel('aed_all_inv.xlsx', engine='openpyxl')
 all_aeds.head()
 
 # In[30]:
