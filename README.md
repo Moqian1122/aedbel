@@ -1,9 +1,9 @@
 Heroku:
 
 Why Heroku?
-- It’s free for hobby apps, which is great to get started and for demos;
-- It’s got clear, concise documentation;
-- It natively supports Python web apps.
+- Free for hobby apps, great to get started and for demos;
+- Clear, concise documentation;
+- Natively supports Python web apps.
 
 About Heroku Command Line Interface (CLI):
 The Heroku CLI is an essential part of using Heroku. With it, you can create and manage Heroku apps directly from the terminal.
