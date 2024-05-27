@@ -12,3 +12,4 @@ ipinfo==5.0.1
 dash==2.17.0
 plotly==5.22.0
 dash_leaflet==1.0.15
+gunicorn==22.0.0
