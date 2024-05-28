@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[33]:
+# In[1]:
 
 
 # packages need to be specified in the requirements.txt
@@ -35,12 +35,7 @@ import sys
 from threading import Thread
 
 
-# In[34]:
-
-all_aeds = pd.read_excel('aed_all_inv.xlsx', engine='openpyxl')
-all_aeds.head()
-
-# In[30]:
+# In[2]:
 
 
 class AEDPoint:
@@ -116,27 +111,24 @@ class MapAEDS:
         return points_within_circle
 
 
-# In[31]:
+# In[3]:
 
 
-#user_loc = (50.8796, 4.7009)
+all_aeds = pd.read_excel('aed_all_inv.xlsx', engine='openpyxl')
+all_aeds.head()
 
 
-# In[32]:
-
-
-#user_loc
-
-
-# In[12]:
+# In[16]:
 
 
 # Define the IPinfo token
-access_token = 'c1f3a0faf18207'  # Replace with your IPinfo token
+access_token = '89232058aa0651'  # Replace with your IPinfo token
 
 # JavaScript to get geolocation with a fallback to IPinfo
 javascript_code = f"""
 let initialLocationSet = false;
+let maxRetries = 3;
+let retryCount = 0;
 
 function getLocation() {{
     if (navigator.geolocation) {{
@@ -146,7 +138,7 @@ function getLocation() {{
             fallbackPosition,
             {{
                 enableHighAccuracy: true,
-                timeout: 5000,
+                timeout: 7500, // Increased timeout for better chances of pinpointing user location
                 maximumAge: 0
             }}
         );
@@ -159,6 +151,13 @@ function getLocation() {{
 function showPosition(position) {{
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
+    
+    // Check for accuracy
+    if (position.coords.accuracy > 100) {{
+        console.log("Accuracy not sufficient, retrying...");
+        retryLocation();
+        return;
+    }}
 
     // Send the coordinates to the Python server
     fetch('/update_location', {{
@@ -173,6 +172,21 @@ function showPosition(position) {{
         // Send initial location to Python kernel
         var py_coords = IPython.notebook.kernel.execute("user_loc = (" + latitude + ", " + longitude + ")");
         initialLocationSet = true;
+    }}
+}}
+
+function handleError(error) {{
+    console.warn(`ERROR({{error.code}}): {{error.message}}`);
+    retryLocation();
+}}
+
+function retryLocation() {{
+    if (retryCount < maxRetries) {{
+        retryCount++;
+        console.log(`Retrying to get location ({{retryCount}}/{{maxRetries}})...`);
+        getLocation();
+    }} else {{
+        fallbackPosition();
     }}
 }}
 
@@ -211,7 +225,7 @@ getLocation();
 display(Javascript(javascript_code))
 
 
-# In[13]:
+# In[17]:
 
 
 try:
@@ -220,13 +234,7 @@ except NameError:
     print("Coordinates not set. Ensure the JavaScript code executed correctly.")
 
 
-# In[14]:
-
-
-#user_loc = (50.8695275, 4.6984257)
-
-
-# In[15]:
+# In[18]:
 
 
 def is_in_schedule(schedule, datetime_obj):
@@ -299,10 +307,10 @@ def is_in_schedule(schedule, datetime_obj):
     return False
 
 
-# In[16]:
+# In[19]:
 
 
-#all_aeds = pd.read_excel(filepath)
+#all_aeds = pd.read_excel(os.path.expanduser('~/Documents/Modern Data Analytics/aed_all_inv.xlsx'))
 weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Sunday"]
 start_index = 15227
 
@@ -323,7 +331,7 @@ for column in weekdays:
     all_aeds[column] = all_aeds[column].apply(lambda x: x.strip() if isinstance(x, str) and x[-1] != ']' else x)
 
 
-# In[17]:
+# In[20]:
 
 
 # Example usage:
@@ -337,7 +345,7 @@ for i in range(0, len(all_aeds)):
     maps.add_point(point, True)
 
 
-# In[18]:
+# In[78]:
 
 
 current_time = datetime.now()
@@ -349,13 +357,13 @@ for point in maps.points:
     i += 1
 
 
-# In[24]:
+# In[79]:
 
 
 nearby_points = maps.points_within_radius(user_loc, 10.8)
 
 
-# In[25]:
+# In[80]:
 
 
 # Define your starting location coordinates (latitude and longitude)
@@ -380,7 +388,7 @@ quickest_destination = min(travel_times, key=travel_times.get)
 print(f"The quickest destination is: {quickest_destination} (travel time: {travel_times[quickest_destination]})")
 
 
-# In[26]:
+# In[81]:
 
 
 # Google MapsDdirections API endpoint
@@ -418,7 +426,7 @@ folium.PolyLine(decoded_walking, color="blue", weight=2.5, opacity=1).add_to(m)
 m
 
 
-# In[27]:
+# In[82]:
 
 
 maps.update_availability(quickest_destination, 2, sit = 'take')
@@ -427,7 +435,7 @@ maps.update_availability(quickest_destination, 2, sit = 'take')
 maps.update_availability(quickest_destination, 2, sit = 'return')
 
 
-# In[28]:
+# In[84]:
 
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -446,21 +454,35 @@ def update_location():
     return jsonify(success=True)
 
 # Function to generate the map as a folium object
-def generate_map(start_location, destination_driving, destination_walking):
-    m = folium.Map(location=start_location, zoom_start=14)
+def generate_map(start_location, destination, destination_driving, destination_walking, display_driving, display_walking):
+    m = folium.Map(location=start_location, zoom_start=18)  # Increased zoom_start for closer view
     
-    # Get the polyline data from the result
-    decoded_driving = polyline.decode(destination_driving)
-    decoded_walking = polyline.decode(destination_walking)
+    # Add marker for the user's current location
+    folium.Marker(
+        location=start_location,
+        popup="Your Location",
+        icon=folium.Icon(color="green")
+    ).add_to(m)
     
-    # Create a PolyLine object using the points data and add it to the map
-    folium.PolyLine(decoded_driving, color="red", weight=2.5, opacity=1).add_to(m)
-    folium.PolyLine(decoded_walking, color="blue", weight=2.5, opacity=1).add_to(m)
+    # Add marker for the AED destination
+    folium.Marker(
+        location=destination,
+        popup="AED Location",
+        icon=folium.Icon(color="red")
+    ).add_to(m)
     
+    if display_driving:
+        decoded_driving = polyline.decode(destination_driving)
+        folium.PolyLine(decoded_driving, color="red", weight=2.5, opacity=1, tooltip="Driving Route").add_to(m)
+        
+    if display_walking:
+        decoded_walking = polyline.decode(destination_walking)
+        folium.PolyLine(decoded_walking, color="blue", weight=2.5, opacity=1, tooltip="Walking Route").add_to(m)
+
     return m
 
 # Update map based on latest location
-def update_map():
+def update_map(display_driving, display_walking):
     global user_location
     
     directions_driving = gmaps.directions(user_location, (maps.points[quickest_destination][0].x, maps.points[quickest_destination][0].y), mode="driving")
@@ -469,44 +491,151 @@ def update_map():
     destination_driving = directions_driving[0]['overview_polyline']['points']
     destination_walking = directions_walking[0]['overview_polyline']['points']
     
-    map_object = generate_map(user_location, destination_driving, destination_walking)
+    destination = (maps.points[quickest_destination][0].x, maps.points[quickest_destination][0].y)
+    map_object = generate_map(user_location, destination, destination_driving, destination_walking, display_driving, display_walking)
     
     return map_object._repr_html_()
 
 # Define the layout of the app
 app.layout = html.Div([
-    html.H1("AED Location Map"),
+    html.H1("AED Locator", style={'text-align': 'center'}),
+    html.Div([
+        dcc.Checklist(
+            id='mode-selection',
+            options=[
+                {'label': 'Driving', 'value': 'driving'},
+                {'label': 'Walking', 'value': 'walking'}
+            ],
+            value=['driving', 'walking'],
+            labelStyle={'display': 'inline-block'}
+        )
+    ]),
     html.Iframe(
         id='map',
         width='100%',
         height='600'
+    ),
+    html.Div(
+        children=[
+            html.Div(
+                id='route-legend',
+                children=[
+                    html.Div([
+                        html.Span(style={'display': 'inline-block', 'width': '20px', 'height': '20px', 'background-color': 'red', 'margin-right': '10px'}),
+                        "Driving Route"
+                    ], style={'margin-bottom': '5px'}),
+                    html.Div([
+                        html.Span(style={'display': 'inline-block', 'width': '20px', 'height': '20px', 'background-color': 'blue', 'margin-right': '10px'}),
+                        "Walking Route"
+                    ])
+                ],
+                style={
+                    'border': '1px solid grey',
+                    'border-radius': '3px',
+                    'padding': '5px',
+                    'width': '180px',
+                    'margin-top': '10px',
+                    'background-color': 'white',
+                    'font-family': 'Arial, sans-serif',
+                    'font-size': '14px',
+                    'display': 'inline-block'
+                }
+            ),
+            html.Div(
+                id='marker-legend',
+                children=[
+                    html.Div([
+                        html.Img(src='https://maps.google.com/mapfiles/ms/icons/green-dot.png', style={'height': '20px', 'margin-right': '10px'}),
+                        "You are here"
+                    ], style={'margin-bottom': '5px'}),
+                    html.Div([
+                        html.Img(src='https://maps.google.com/mapfiles/ms/icons/red-dot.png', style={'height': '20px', 'margin-right': '10px'}),
+                        "Location of AED"
+                    ])
+                ],
+                style={
+                    'border': '1px solid grey',
+                    'border-radius': '3px',
+                    'padding': '5px',
+                    'width': '180px',
+                    'margin-top': '10px',
+                    'background-color': 'white',
+                    'font-family': 'Arial, sans-serif',
+                    'font-size': '14px',
+                    'display': 'inline-block',
+                    'margin-left': '20px'
+                }
+            ),
+            html.Div(
+                id='address',
+                style={
+                    'padding': '10px',
+                    'display': 'inline-block',
+                    'vertical-align': 'middle',
+                    'margin-left': '20px',
+                    'font-family': 'Arial, sans-serif',
+                    'font-size': '14px',
+                    'border': '1px solid grey',
+                    'border-radius': '3px',
+                    'background-color': 'white'
+                }
+            )
+        ],
+        style={'display': 'flex', 'align-items': 'center'}
     ),
     dcc.Interval(
         id='interval-component',
         interval=10*1000,  # in milliseconds
         n_intervals=0
     ),
-    html.Div(id='status', style={'padding': '20px'})
+    html.Div(id='status', style={'padding': '20px'}),
+    html.Div([
+        html.Div([
+            html.H2("How to Operate an AED", style={'margin-bottom': '10px'}),
+            html.Iframe(
+                src="https://www.youtube.com/embed/2PJR0JyLPZY",
+                width="100%",
+                height="315",
+                style={'border': 'none'}
+            ),
+        ], style={'flex': '1', 'padding': '10px'}),
+        html.Div([
+            html.H2("What to do in case of a cardiac arrest (If you do not have immediate access to an AED)", style={'margin-bottom': '10px'}),
+            html.Iframe(
+                src="https://www.youtube.com/embed/-NodDRTsV88",
+                width="100%",
+                height="315",
+                style={'border': 'none'}
+            ),
+        ], style={'flex': '1', 'padding': '10px'})
+    ], style={'display': 'flex', 'flex-direction': 'row', 'align-items': 'flex-start'})
 ])
 
-# Callback to update the map
+# Callback to update the map and address
 @app.callback(
-    Output('map', 'srcDoc'),
-    [Input('interval-component', 'n_intervals')]
+    [Output('map', 'srcDoc'),
+     Output('address', 'children')],
+    [Input('interval-component', 'n_intervals'),
+     Input('mode-selection', 'value')]
 )
-def update_map_interval(n):
-    return update_map()
+def update_map_interval(n, selected_modes):
+    display_driving = 'driving' in selected_modes
+    display_walking = 'walking' in selected_modes
+    map_html = update_map(display_driving, display_walking)
+    address = maps.points[quickest_destination][0].address
+    return map_html, f"AED Location: {address}"
 
 # Callback to update availability after 30 minutes
 @app.callback(Output('status', 'children'), [Input('interval-component', 'n_intervals')])
 def update_availability(n):
-    time.sleep(30 * 60)  # Wait for 30 minutes
-    maps.update_availability(quickest_destination, 2, sit='return')
-    return "AED has been returned and is now available again."
+    if n > 0 and n % 180 == 0:  # Every 30 minutes
+        maps.update_availability(quickest_destination, 2, sit='return')
+        return "AED has been returned and is now available again."
+    return ""
 
 # Run the app
 if __name__ == '__main__':
-    app.run(jupyter_mode="external", port = 8051)
+    app.run(jupyter_mode="external", port=8051)
 
 
 # In[ ]:
