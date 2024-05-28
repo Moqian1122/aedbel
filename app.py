@@ -119,13 +119,13 @@ class MapAEDS:
 # In[31]:
 
 
-user_loc = (50.8796, 4.7009)
+#user_loc = (50.8796, 4.7009)
 
 
 # In[32]:
 
 
-user_loc
+#user_loc
 
 
 # In[12]:
