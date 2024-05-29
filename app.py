@@ -419,8 +419,8 @@ def update_availability(n, user_state):
     return ""
 
 # Run the app
+initialize_database()
 if __name__ == '__main__':
-    initialize_database()
     app.run(jupyter_mode="external", port=8051, host="0.0.0.0")
 
 
