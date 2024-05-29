@@ -394,18 +394,24 @@ def update_map_interval(n, selected_modes, user_loc, user_state):
         user_loc = fallback_position(request.remote_addr)
     else:
         user_loc = (user_loc['lat'], user_loc['lon'])
-
+    previous_distance = None
     if(user_state == None):
         # It means the webapp is just loaded. Check the location first
         quickest_destination = find_quickest_destinations(user_loc, maps.points_within_radius(user_loc, 10.8))
+        previous_distance = user_loc
     else:
         quickest_destination = user_state['quickest_destination']
+        previous_distance = user_state['previous_distance']
+        if geodesic(user_loc, previous_distance).km > 5:
+            quickest_destination = find_quickest_destinations(user_loc, maps.points_within_radius(user_loc, 10.8))
+            previous_distance = user_loc
+        
 
     display_driving = 'driving' in selected_modes
     display_walking = 'walking' in selected_modes
     map_html = update_map(user_loc, quickest_destination, display_driving, display_walking)
     address = maps.points[quickest_destination][0].address
-    return map_html, f"AED Location: {address}", { "quickest_destination" : quickest_destination }
+    return map_html, f"AED Location: {address}", { "quickest_destination" : quickest_destination, "previous_distance": previous_distance }
 
 # Callback to update availability after 30 minutes
 @app.callback(Output('status', 'children'), [Input('interval-component', 'n_intervals'), Input('user_state','data')])
