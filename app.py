@@ -261,6 +261,7 @@ def update_map(user_location, quickest_destination, display_driving, display_wal
 # Define the layout of the app
 app.layout = html.Div([
     html.H1("AED Locator", style={'text-align': 'center'}),
+    html.Img(src="AED_Bel.png")],
     dcc.Geolocation(id='user_loc'),
     
     html.Div([
