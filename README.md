@@ -1,4 +1,4 @@
-The GitHub space is a repository linked to Heroku.
+# AEDBel: A quick AED-searching application designed by Group Italy, KU Leuven for Modern Data Analytics
 
 **Why Heroku?**
 
