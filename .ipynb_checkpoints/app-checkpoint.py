@@ -377,7 +377,6 @@ app.layout = html.Div([
             'overflow-y': 'auto'  # Enable scrolling if content exceeds the container height
         })
     ], style={'padding': '20px', 'width': '90%', 'margin': '0 auto'}),  # Increased width for better visibility
-    
     html.Div([
         html.Div([
             html.H2("How to Operate an AED", style={'margin-bottom': '10px', 'display': 'inline'}),
@@ -396,7 +395,7 @@ app.layout = html.Div([
                 height="315",
                 style={'border': 'none', 'display': 'inline'}
             ),
-        ], style={'flex': '1', 'padding': '10px', 'display': 'inline-block'})
+        ], style={'flex': '1', 'padding': '10px'})
     ], style={'flex-direction': 'row', 'align-items': 'flex-start', 'display': 'block'})
 ])
 
