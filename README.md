@@ -10,8 +10,11 @@ AEDBel is an application developed, deployed and operated by Group Italy from KU
 AEDBel is deveopled, deployed and operated by Group Italy. Group Italy has four members.
 
 Massimo Gerecitano
+
 Moqian Chen
+
 Jorge Puertolas Molina
+
 Shyam Krishna Selvan
 
 
