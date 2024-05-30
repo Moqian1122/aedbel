@@ -1,5 +1,7 @@
 # AEDBel: A quick AED-searching application designed by Group Italy, KU Leuven for Modern Data Analytics
 
+<img src="AED_Bel.png" alt="APP icon" width="80" height="80">
+
 **Why Heroku?**
 
 - Free for hobby apps, great to get started and for demos;
