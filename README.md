@@ -1,12 +1,20 @@
-# AEDBel: A quick AED-searching application designed by Group Italy
+# AEDBel: A quick AED-searching application
 
 <img src="AED_Bel.png" alt="APP icon" width="100" height="100">
 
+## Introduction
+
+AEDBel is an application developed, deployed and operated by Group Italy from KU Leuven for the course Modern Data Analytics.
+
 **Members**
+AEDBel is deveopled, deployed and operated by Group Italy.
 
 Massimo Gerecitano
+
 Moqian Chen
+
 Jorge Puertolas Molina
+
 Shyam Krishna Selvan
 
 
