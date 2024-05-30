@@ -1,6 +1,6 @@
 # AEDBel: A quick AED-searching application
 
-<img src="AED_Bel.png" alt="APP icon" width="100" height="100">
+<img src="AED_Bel.png" alt="APP icon" width="120" height="120">
 
 ## Introduction
 
