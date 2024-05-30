@@ -23,7 +23,7 @@ Shyam Krishna Selvan
 
 Orginal datasets provided are used for AED location optimization.
 
-The data of optimized locations are used in the application: aed_all_inv.xlsx
+The data of optimized locations are used in the application: [aed_all_inv.xlsx](https://github.com/Moqian1122/aedbel/blob/main/aed_all_inv.xlsx).
 
 ## Maintainance ##
 
