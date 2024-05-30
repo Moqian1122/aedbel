@@ -396,7 +396,7 @@ app.layout = html.Div([
                 style={'border': 'none', 'display': 'inline'}
             ),
         ], style={'flex': '1', 'padding': '10px', 'display': 'block'})
-    ], style={'display': 'flex', 'flex-direction': 'row', 'align-items': 'flex-start'})
+    ], style={'display': 'inline-block', 'flex-direction': 'row', 'align-items': 'flex-start'})
 ])
 
 @app.callback(
