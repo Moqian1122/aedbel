@@ -1,4 +1,4 @@
-# AEDBel: A quick AED-searching application designed by Group Italy, KU Leuven for Modern Data Analytics
+# AEDBel: A quick AED-searching application designed by Group Italy, KU Leuven
 
 <img src="AED_Bel.png" alt="APP icon" width="100" height="100">
 
