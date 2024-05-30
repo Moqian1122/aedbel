@@ -21,7 +21,9 @@ Shyam Krishna Selvan
 
 ## Data ##
 
-The data comes from 
+Orginal datasets provided are used for AED location optimization.
+
+The data of optimized locations are used in the application: aed_all_inv.xlsx
 
 ## Maintainance ##
 
