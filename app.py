@@ -163,9 +163,6 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 server = Flask(__name__)
 app = dash.Dash(__name__, server=server, external_stylesheets=external_stylesheets)
 
-test_png = 'AED_Bel.png'
-test_base64 = base64.b64encode(open(test_png, 'rb').read()).decode('ascii')
-
 maps = None
 
 def initialize_database():
@@ -261,13 +258,16 @@ def update_map(user_location, quickest_driving, quickest_walking, selected_mode)
 
     return map_object._repr_html_(), directions_driving, directions_walking
 
+test_png = 'AED_Bel.png'
+test_base64 = base64.b64encode(open(test_png, 'rb').read()).decode('ascii')
+
 app.layout = html.Div([
     html.Div([
     html.Img(src='data:image/png;base64,{}'.format(test_base64), width=100, style={'display': 'inline-block'}),
     html.H1("AED Locator", style={'text-align': 'center', 'display': 'inline-block'}),
     dcc.Geolocation(id='user_loc'), ], 
     ),
-
+    
     html.Div([
         html.Label("Choose a mode of travel (You may only choose 1):"),
         dcc.RadioItems(
@@ -377,27 +377,26 @@ app.layout = html.Div([
             'overflow-y': 'auto'  # Enable scrolling if content exceeds the container height
         })
     ], style={'padding': '20px', 'width': '90%', 'margin': '0 auto'}),  # Increased width for better visibility
-    
     html.Div([
         html.Div([
-            html.H3("How to Operate an AED", style={'margin-bottom': '10px', 'display': 'inline'}),
+            html.H3("How to Operate an AED", style={'margin-bottom': '10px'}),
             html.Iframe(
                 src="https://www.youtube.com/embed/2PJR0JyLPZY",
                 width="100%",
                 height="315",
                 style={'border': 'none', 'display': 'inline'}
             ),
-        ], style={'flex': '1', 'padding': '10px', 'display': 'block'}),
+        ], style={'flex': '1', 'padding': '10px'}),
         html.Div([
-            html.H3("What to do in case of a cardiac arrest (If you do not have immediate access to an AED)", style={'margin-bottom': '10px', 'display': 'inline'}),
+            html.H3("What to do in case of a cardiac arrest (If you do not have immediate access to an AED)", style={'margin-bottom': '10px'}),
             html.Iframe(
                 src="https://www.youtube.com/embed/-NodDRTsV88",
                 width="100%",
                 height="315",
                 style={'border': 'none', 'display': 'inline'}
             ),
-        ], style={'flex': '1', 'padding': '10px', 'display': 'inline-block'})
-    ], style={'flex-direction': 'row', 'align-items': 'flex-start', 'display': 'block'})
+        ], style={'flex': '1', 'padding': '10px'})
+    ], style={'display': 'flex', 'flex-direction': 'row', 'align-items': 'flex-start'})
 ])
 
 @app.callback(
@@ -412,12 +411,12 @@ app.layout = html.Div([
 )
 def update_map_interval(n, selected_mode, user_loc, user_state):
     quickest_driving, quickest_walking = None, None
-    if(user_loc == None):
+    if user_loc is None:
         user_loc = fallback_position(request.remote_addr)
     else:
         user_loc = (user_loc['lat'], user_loc['lon'])
     previous_distance = None
-    if(user_state == None):
+    if user_state is None:
         quickest_driving, quickest_walking = find_quickest_destinations(user_loc, maps.points_within_radius(user_loc, 10.8))
         previous_distance = user_loc
     else:
@@ -433,12 +432,15 @@ def update_map_interval(n, selected_mode, user_loc, user_state):
     if selected_mode == 'driving':
         address = maps.points[quickest_driving][0].address
         directions = directions_driving[0]['legs'][0]['steps']
+        travel_time = directions_driving[0]['legs'][0]['duration']['text']
     elif selected_mode == 'walking':
         address = maps.points[quickest_walking][0].address
         directions = directions_walking[0]['legs'][0]['steps']
+        travel_time = directions_walking[0]['legs'][0]['duration']['text']
     else:
         address = maps.points[quickest_driving][0].address if quickest_driving == quickest_walking else f"Nearest AED by Drive: {maps.points[quickest_driving][0].address}\nNearest AED by Walk: {maps.points[quickest_walking][0].address}"
         directions = []
+        travel_time = ""
 
     directions_text = []
     if directions:
@@ -446,7 +448,12 @@ def update_map_interval(n, selected_mode, user_loc, user_state):
             instructions = re.sub('<[^<]+?>', '', step['html_instructions'])  # Remove HTML tags
             directions_text.append(html.Li(instructions))
 
-    return map_html, f"AED Location: {address}", { "quickest_driving" : quickest_driving, "quickest_walking": quickest_walking, "previous_distance": previous_distance }, html.Ul(directions_text)
+    return (
+        map_html, 
+        html.Div([html.Div(f"AED Location: {address}"), html.Div(f"Expected Time of Arrival: {travel_time}")]),
+        {"quickest_driving": quickest_driving, "quickest_walking": quickest_walking, "previous_distance": previous_distance}, 
+        html.Ul(directions_text)
+    )
 
 @app.callback(Output('status', 'children'), [Input('interval-component', 'n_intervals'), Input('user_state','data')])
 def update_availability(n, user_state):
@@ -462,4 +469,4 @@ def update_availability(n, user_state):
 
 initialize_database()
 if __name__ == '__main__':
-    app.run(jupyter_mode="external", port=8051) 
+    app.run(jupyter_mode="external", port=8051)
