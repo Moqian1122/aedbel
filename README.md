@@ -2,11 +2,13 @@
 
 <img src="AED_Bel.png" alt="APP icon" width="100" height="100">
 
-**Why Heroku?**
+**Members**
 
-- Free for hobby apps, great to get started and for demos;
-- Clear, concise documentation;
-- Natively supports Python web apps.
+Massimo Gerecitano
+Moqian Chen
+Jorge Puertolas Molina
+Shyam Krishna Selvan
+
 
 **Heroku Command Line Interface (CLI)**
 
