@@ -21,6 +21,6 @@ Shyam Krishna Selvan
 
 ## Maintainance ##
 
-The application is deployed using Heroku. Please click here if you would like to visit the application.
+The application is deployed using Heroku and continuously monitored. Please click [here](https://aedbel-4bb7a00847c1.herokuapp.com/) if you would like to visit the application. 
 
 ![image](https://github.com/Moqian1122/aedbel/assets/162614386/66fac628-8fdd-48b6-9305-82f374e2c0d7)
