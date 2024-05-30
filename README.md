@@ -4,7 +4,7 @@
 
 ## Introduction
 
-AEDBel is an application developed, deployed and operated by Group Italy from KU Leuven for the course Modern Data Analytics.
+AEDBel is an application developed, deployed and operated by Group Italy from KU Leuven for the course Modern Data Analytics. The application is designed for saving rescuers more valuable time whenever a cardiac arrest happen. Based on optimized AED locations, AEDBel requests users' location to calculate the nearest AED in a short time. It provides walking/driving mode in terms of suggesting routes. It also display points of interest and 
 
 **Members**
 AEDBel is deveopled, deployed and operated by Group Italy.
