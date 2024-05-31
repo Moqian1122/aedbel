@@ -143,7 +143,7 @@ def is_in_schedule(schedule, datetime_obj):
 
     return False
 
-gmaps = googlemaps.Client(key='AIzaSyCHT_UZ49tsasFakgDUVha05snFVsUbq-M')
+gmaps = googlemaps.Client(key='AIzaSyAvVZL_3CV1JvPsva1pO-lY5aMuWBvM1H4')
 
 def find_quickest_destinations(start_location, destinations):
     travel_times_driving = {}
