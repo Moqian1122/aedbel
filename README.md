@@ -2,7 +2,7 @@
 
 <img src="AED_Bel.png" alt="APP icon" width="120" height="120">
 
-## Introduction
+## Introduction ##
 
 Titled "From bystander to hero," our project aims to enhance the survival chances of individuals experiencing sudden cardiac arrest by optimizing the placement of Automated External Defibrillator (AED) devices across Belgium.
 
@@ -24,6 +24,10 @@ Shyam Krishna Selvan
 Original datasets (AED location, interventions, and medical transport) provided are used for AED location optimization.
 
 The data of optimized locations are used in the application: [aed_all_inv.xlsx](https://github.com/Moqian1122/aedbel/blob/main/aed_all_inv.xlsx).
+
+## Tip ##
+
+Please run the code cautiously as it is connected to a billing account.
 
 ## Maintenance ##
 
