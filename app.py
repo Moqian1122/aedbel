@@ -10,6 +10,7 @@ import dash
 from dash import dcc, html
 from dash.dependencies import Input, Output
 
+import os
 import re
 import math
 import json
@@ -108,6 +109,10 @@ def is_in_schedule(schedule, datetime_obj):
             end = '12 PM'
         if end == '0 AM':
             end = '12 AM'
+        if start == '3PM':
+            start = '3 PM'
+        if end == '3PM':
+            end = '3 PM'
         
         try:
             start_time = datetime.strptime(start, '%I %p').time()
@@ -376,7 +381,7 @@ app.layout = html.Div([
     ),
     html.Div(id='status', style={'padding': '20px'}),
     html.Div(id='directions-container', children=[
-        html.H3("Directions to AED", style={'margin-bottom': '10px'}),
+        html.H2("Directions to AED", style={'margin-bottom': '10px'}),
         html.Div(id='directions', style={
             'border': '1px solid grey',
             'border-radius': '3px',
@@ -390,14 +395,14 @@ app.layout = html.Div([
     ], style={'padding': '20px', 'width': '90%', 'margin': '0 auto'}),  # Increased width for better visibility
     html.Div([
         html.Div([
-            html.H3("How to Operate an AED", style={'margin-bottom': '10px', 'display': 'inline'}),
+            html.H2("How to Operate an AED", style={'margin-bottom': '10px', 'display': 'inline'}),
             html.Iframe(
                 src="https://www.youtube.com/embed/2PJR0JyLPZY",
                 width="100%",
                 height="315",
                 style={'border': 'none', 'display': 'inline'}
             ),
-        ], style={'flex': '1', 'padding': '10px', 'display': 'block'}),
+        ], style={'flex': '1', 'padding': '10px', 'display': 'inline-block'}),
         html.Div([
             html.H2("What to do in case of a cardiac arrest (If you do not have immediate access to an AED)", style={'margin-bottom': '10px', 'display': 'inline'}),
             html.Iframe(
@@ -406,7 +411,7 @@ app.layout = html.Div([
                 height="315",
                 style={'border': 'none', 'display': 'inline'}
             ),
-        ], style={'flex': '1', 'padding': '10px', 'display': 'block'})
+        ], style={'flex': '1', 'padding': '10px', 'display': 'inline-block'})
     ], style={'display': 'inline-block', 'flex-direction': 'row', 'align-items': 'flex-start'})
 ])
 
@@ -480,4 +485,4 @@ def update_availability(n, user_state):
 
 initialize_database()
 if __name__ == '__main__':
-    app.run(jupyter_mode="external", port=8051)
+    app.run(jupyter_mode="external", port=8063)
