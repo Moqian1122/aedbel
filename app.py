@@ -258,12 +258,15 @@ def update_map(user_location, quickest_driving, quickest_walking, selected_mode)
 
     return map_object._repr_html_(), directions_driving, directions_walking
 
-test_png = 'AED_Bel.png'
-test_base64 = base64.b64encode(open(test_png, 'rb').read()).decode('ascii')
+ambulancecall = 'AmbulanceLogo.jpg'
+ambulancecalllogo = base64.b64encode(open(ambulancecall, 'rb').read()).decode('ascii')
+
+log_png = 'AED_Bel.png'
+log_base64 = base64.b64encode(open(log_png, 'rb').read()).decode('ascii')
 
 app.layout = html.Div([
     html.Div([
-    html.Img(src='data:image/png;base64,{}'.format(test_base64), width=100, style={'display': 'inline-block'}),
+    html.Img(src='data:image/png;base64,{}'.format(log_base64), width=100, style={'display': 'inline-block'}),
     html.H1("AED Locator", style={'text-align': 'center', 'display': 'inline-block'}),
     dcc.Geolocation(id='user_loc'), ], 
     ),
@@ -353,7 +356,15 @@ app.layout = html.Div([
                     'border-radius': '3px',
                     'background-color': 'white'
                 }
-            )
+            ),
+            
+    html.A(
+        href='tel:112',
+        children=html.Img(
+            src='data:image/png;base64,{}'.format(ambulancecalllogo), style={'transform': 'scale(0.3)'} 
+        ),
+    
+)
         ],
         style={'display': 'flex', 'align-items': 'center'}
     ),
@@ -365,7 +376,7 @@ app.layout = html.Div([
     ),
     html.Div(id='status', style={'padding': '20px'}),
     html.Div(id='directions-container', children=[
-        html.H2("Directions to AED", style={'margin-bottom': '10px'}),
+        html.H3("Directions to AED", style={'margin-bottom': '10px'}),
         html.Div(id='directions', style={
             'border': '1px solid grey',
             'border-radius': '3px',
@@ -388,7 +399,7 @@ app.layout = html.Div([
             ),
         ], style={'flex': '1', 'padding': '10px', 'display': 'block'}),
         html.Div([
-            html.H3("What to do in case of a cardiac arrest (If you do not have immediate access to an AED)", style={'margin-bottom': '10px', 'display': 'inline'}),
+            html.H2("What to do in case of a cardiac arrest (If you do not have immediate access to an AED)", style={'margin-bottom': '10px', 'display': 'inline'}),
             html.Iframe(
                 src="https://www.youtube.com/embed/-NodDRTsV88",
                 width="100%",
