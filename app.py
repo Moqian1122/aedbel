@@ -362,23 +362,23 @@ app.layout = html.Div([
                     'background-color': 'white'
                 }
             ),
-
             html.Div(
                 children=[
                     html.A(
                         href='tel:112',
                         children=html.Img(
-                            src='data:image/png;base64,{}'.format(ambulancecalllogo), style={'transform': 'scale(0.3)', 'display': 'inline-block'}
+                            src='data:image/png;base64,{}'.format(ambulancecalllogo), style={'transform': 'scale(0.3)', 'margin-left': '20px', 'display': 'inline-block'}
                         )
                     )
                 ],
                 style={
-                    'display': 'inline-block',
-                    'vertical-align': 'middle'
+                    'display': 'block',
+                    'vertical-align': 'middle',
+                    'margin-left': '20px'
                 }
             )
         ],
-        style={'display': 'flex', 'align-items': 'center', 'flex-wrap': 'wrap'}  # Added flex-wrap to handle wrapping in small screens
+        style={'display': 'inline-block', 'align-items': 'center', 'flex-wrap': 'wrap'}  # Added flex-wrap to handle wrapping in small screens
     ),
     dcc.Store(id='user_state'),
     dcc.Interval(
@@ -402,39 +402,24 @@ app.layout = html.Div([
     ], style={'padding': '20px', 'width': '90%', 'margin': '0 auto'}),  # Increased width for better visibility
     html.Div([
         html.Div([
-            html.H3("How to Operate an AED", style={'margin-bottom': '10px', 'display': 'inline'}),
+            html.H2("How to Operate an AED", style={'margin-bottom': '10px'}),
             html.Iframe(
                 src="https://www.youtube.com/embed/2PJR0JyLPZY",
                 width="100%",
                 height="315",
-                style={'border': 'none', 'display': 'inline'}
+                style={'border': 'none'}
             ),
-        ], style={'flex': '1', 'padding': '10px', 'display': 'inline-block'}),
+        ], style={'flex': '1', 'padding': '10px'}),
         html.Div([
-            html.H3("What to do in case of a cardiac arrest (If you do not have immediate access to an AED)", style={'margin-bottom': '10px', 'display': 'inline'}),
+            html.H2("What to do in case of a cardiac arrest (If you do not have immediate access to an AED)", style={'margin-bottom': '10px'}),
             html.Iframe(
                 src="https://www.youtube.com/embed/-NodDRTsV88",
                 width="100%",
                 height="315",
-                style={'border': 'none', 'display': 'inline'}
+                style={'border': 'none'}
             ),
-        ], style={'flex': '1', 'padding': '10px', 'display': 'inline-block'})
-    ], style={'display': 'inline-block', 'flex-direction': 'row', 'align-items': 'flex-start', 'flex-wrap': 'wrap'}),
-    html.Div(
-        children=[
-            html.A(
-                href='tel:112',
-                children=html.Img(
-                    src='data:image/png;base64,{}'.format(ambulancecalllogo), style={'transform': 'scale(0.3)', 'display': 'inline-block'}
-                )
-            )
-        ],
-        style={
-            'text-align': 'center',
-            'padding': '20px',
-            'display': 'inline-block'
-        }
-    )
+        ], style={'flex': '1', 'padding': '10px'})
+    ], style={'display': 'flex', 'flex-direction': 'row', 'align-items': 'flex-start', 'flex-wrap': 'wrap'}),
 ])
 
 @app.callback(
