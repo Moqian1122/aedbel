@@ -402,7 +402,7 @@ app.layout = html.Div([
     ], style={'padding': '20px', 'width': '90%', 'margin': '0 auto'}),  # Increased width for better visibility
     html.Div([
         html.Div([
-            html.H2("How to Operate an AED", style={'margin-bottom': '10px', 'display':'inline'}),
+            html.H3("How to Operate an AED", style={'margin-bottom': '10px', 'display':'inline'}),
             html.Iframe(
                 src="https://www.youtube.com/embed/2PJR0JyLPZY",
                 width="100%",
@@ -411,7 +411,7 @@ app.layout = html.Div([
             ),
         ], style={'flex': '1', 'padding': '10px', 'display':'inline-block'}),
         html.Div([
-            html.H2("What to do in case of a cardiac arrest (If you do not have immediate access to an AED)", style={'margin-bottom': '10px', 'display':'inline'}),
+            html.H3("What to do in case of a cardiac arrest (If you do not have immediate access to an AED)", style={'margin-bottom': '10px', 'display':'inline'}),
             html.Iframe(
                 src="https://www.youtube.com/embed/-NodDRTsV88",
                 width="100%",
