@@ -367,18 +367,18 @@ app.layout = html.Div([
                     html.A(
                         href='tel:112',
                         children=html.Img(
-                            src='data:image/png;base64,{}'.format(ambulancecalllogo), style={'transform': 'scale(0.3)', 'margin-left': '20px', 'display': 'inline-block'}
+                            src='data:image/png;base64,{}'.format(ambulancecalllogo), width=100, style={'display': 'inline-block'}
                         )
                     )
                 ],
                 style={
-                    'display': 'block',
+                    'display': 'inline-block',
                     'vertical-align': 'middle',
                     'margin-left': '20px'
                 }
             )
         ],
-        style={'display': 'inline-block', 'align-items': 'center', 'flex-wrap': 'wrap'}  # Added flex-wrap to handle wrapping in small screens
+        style={'display': 'flex', 'align-items': 'center', 'flex-wrap': 'wrap'}  # Added flex-wrap to handle wrapping in small screens
     ),
     dcc.Store(id='user_state'),
     dcc.Interval(
@@ -420,6 +420,20 @@ app.layout = html.Div([
             ),
         ], style={'flex': '1', 'padding': '10px'})
     ], style={'display': 'flex', 'flex-direction': 'row', 'align-items': 'flex-start', 'flex-wrap': 'wrap'}),
+    html.Div(
+        children=[
+            html.A(
+                href='tel:112',
+                children=html.Img(
+                    src='data:image/png;base64,{}'.format(ambulancecalllogo), style={'transform': 'scale(0.3)'}
+                )
+            )
+        ],
+        style={
+            'text-align': 'center',
+            'padding': '20px'
+        }
+    )
 ])
 
 @app.callback(
