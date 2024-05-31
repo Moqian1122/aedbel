@@ -25,7 +25,7 @@ Orginal datasets (AED location, interventions and medical transport) provided ar
 
 The data of optimized locations are used in the application: [aed_all_inv.xlsx](https://github.com/Moqian1122/aedbel/blob/main/aed_all_inv.xlsx).
 
-## Maintainance ##
+## Maintenance ##
 
 The application is deployed using Heroku and continuously monitored. Please click [here](https://aedbel-4bb7a00847c1.herokuapp.com/) if you would like to visit the application. 
 
