@@ -25,6 +25,10 @@ Original datasets (AED location, interventions, and medical transport) provided 
 
 The data of optimized locations are used in the application: [aed_all_inv.xlsx](https://github.com/Moqian1122/aedbel/blob/main/aed_all_inv.xlsx).
 
+## File ##
+
+For the 'AED Prediction with Pipeline.ipynb' and 'requirements_prediction.txt', they are documents related with AED location optimization. For other documents, they are for AED searching and application deployment.
+
 ## Tip ##
 
 Please run the code cautiously as it is connected to a billing account.
